@@ -1,23 +1,18 @@
 # methods.py
-from .structures import EventCall
+from .variables import events
+from .structures import EventCall, EventHandler
+import asyncio
 
-#Store the event handlers
-events = {}
 
 # Define the "on" method
-def on(event_name, priority=0, function=None):
-    # Check if the event is in the events dictionary.
-    if event_name not in events:
-        events[event_name] = {}
-    
-    # Check if the priority is already registered.
-    if priority not in events[event_name]:
-        events[event_name][priority] = []
-
+def on(event_name, priority=0, register_ra=True, function=None):
     # Wrap the function
     def wrapper(func):
         # Insert the handler function into the dict.
-        events[event_name][priority].append(func)
+        handler = EventHandler(func, event_name, priority)
+        if register_ra:
+            handler.register()
+        return handler
     
     # If there isn't a function in the args, return the wrapper. 
     if not function:
@@ -45,7 +40,7 @@ def call(event_name, cancellable=False, blocking=True, *args, **kwargs):
     for index in index_order:
         for handler in events[event_name][index]:
             # Run the handler
-            event_call.response = handler(event_call, *args, **kwargs)
+            event_call.response = handler.call(event_call, args=args, kwargs=kwargs)
 
             # If the event was cancelled, do not run the next handlers.
             if event_call.cancelled and blocking:

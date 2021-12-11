@@ -1,5 +1,45 @@
 #structures.py
 from .exceptions import UncancellableEvent
+from .variables import events, async_events
+
+
+# Wrapper for event handlers
+class EventHandler:
+    def __init__(self, function, event, priority, additional_kwargs={}):
+        self.function = function
+        self.event = event
+        self.priority = priority
+        self.additional_kwargs = additional_kwargs
+
+
+    def register(self, additional_kwargs={}):
+        if self.event not in events:
+            events[self.event] = {}
+        
+        # Check if the priority is already registered.
+        if self.priority not in events[self.event]:
+            events[self.event][self.priority] = []
+
+        events[self.event][self.priority].append(self)
+
+        self.additional_kwargs = self.additional_kwargs | additional_kwargs
+
+    def call(self, call, args, kwargs):
+        kwargs = kwargs | self.additional_kwargs
+        return self.function(call, *args, **kwargs)
+
+# Add support for event calls inside objects
+class EventSupport:
+    def __init__(self):
+        self.register_events()
+
+    def register_events(self):
+        for method in self.__dir__():
+            method = self.__getattribute__(method)
+            if isinstance(method, EventHandler):
+                method.register({"self": self})
+
+
 
 # Define the EventCall class
 class EventCall:
@@ -26,4 +66,4 @@ class EventCall:
         return self.__name
     
     def __repr__(self):
-        return f'<EventCall _name={repr(self.name)} _cancelled={self.cancelled} _response={repr(self.response)}>'
+        return f'<EventCall _name={self.name!r} _cancelled={self.cancelled!r} _response={self.response!r}>'
