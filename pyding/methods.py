@@ -23,7 +23,7 @@ def on(event_name, priority=0, register_ra=True, function=None):
 
 
 # Define the "call" method
-def call(event_name, cancellable=False, blocking=True, *args, **kwargs):
+def call(event_name, cancellable=False, blocking=True, first_response=False, *args, **kwargs):
     # Return nothing if there isn't an event registered with this name.
     if event_name not in events:
         return
@@ -40,7 +40,12 @@ def call(event_name, cancellable=False, blocking=True, *args, **kwargs):
     for index in index_order:
         for handler in events[event_name][index]:
             # Run the handler
-            event_call.response = handler.call(event_call, args=args, kwargs=kwargs)
+            response = handler.call(event_call, args=args, kwargs=kwargs)            
+            event_call.response = response
+
+            # If this is the first response, break the loop
+            if response and first_response:
+                return event_call
 
             # If the event was cancelled, do not run the next handlers.
             if event_call.cancelled and blocking:

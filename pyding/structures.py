@@ -24,6 +24,9 @@ class EventHandler:
 
         self.additional_kwargs = self.additional_kwargs | additional_kwargs
 
+    def unregister(self):
+        events[self.event][self.priority].remove(self)
+
     def call(self, call, args, kwargs):
         kwargs = kwargs | self.additional_kwargs
         return self.function(call, *args, **kwargs)
