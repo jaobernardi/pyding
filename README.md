@@ -1,9 +1,22 @@
-# pyding
-PyDing is a (very) simple but effective event handler.
+<h1 align="center"> pyding 🛎 </h1>
+<p align="center">PyDing is a (very) simple but effective event handler.</p>
+<p align="center">
+    <a href="https://twitter.com/jaobernard">
+        <img alt="Feito por João Bernardi" src="https://img.shields.io/badge/feito%20por-%40jaobernard-39013C">
+    </a>
+    <a>
+        <img src="https://img.shields.io/github/last-commit/jaobernardi/pyding?color=39013C">
+    </a>
+    <a href="https://pypi.">
+        <img src="https://img.shields.io/pypi/dm/pyding?color=39013C">
+    </a>
+</p>
 
+<br>
+<br>
 
-## Usage
----
+<h2 align="center"> Usage </h2>
+
 ```python
 # Import the module
 import pyding
@@ -19,8 +32,10 @@ pyding.call("greetings")
 # Hello there from pyding!
 ```
 
-### Cancellable events
-You can also make events that can be cancelled, using the `cancellable` keyword for `pyding.call`
+<h3 align="center"> Cancellable events </h3>
+
+<p align="center"> You can also make events that can be cancelled, using the <code>cancellable</code> keyword for <code>pyding.call</code></p>
+
 > ⚠️ - Cancelling and event which cannot be cancelled will raise `pyding.exceptions.UncancellableEvent`
 
 ```python
@@ -40,8 +55,9 @@ event.cancelled
 # will return True
 ```
 
-### Hierarchy
-Event handlers can have an priority attached to them. If the event is cancelled, it will not execute the next handlers. This behavior can be changed by the `blocking` keyword for `pyding.call`
+<h3 align="center"> Hierarchy </h3>
+
+<p align="center"> Event handlers can have an priority attached to them. If the event is cancelled, it will not execute the next handlers. This behavior can be changed by the <code>blocking</code> keyword for <code>pyding.call</code></p>
 
 ```python
 import pyding
@@ -96,8 +112,9 @@ event.cancelled
 # True
 ```
 
-### Dealing with the response
-Events can return values, which will be attributed to `event.response`
+<h3 align="center">  Dealing with the response </h3>
+
+<p align="center"> Events can return values, which will be attributed to <code>event.response</code></p>
 
 ```python
 import pyding
@@ -115,8 +132,9 @@ event.response
 # Hello World!
 ```
 
-### Using arguments
-Arguments can be passed onto the handlers through `pyding.call`
+<h3 align="center">  Using arguments </h3>
+
+<p align="center"> Arguments can be passed onto the handlers through <code>pyding.call</code> </p>
 
 ```python
 import pyding
