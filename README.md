@@ -7,7 +7,7 @@
     <a>
         <img src="https://img.shields.io/github/last-commit/jaobernardi/pyding?color=39013C">
     </a>
-    <a href="https://pypi.">
+    <a href="https://pypi.org/projects/pyding">
         <img src="https://img.shields.io/pypi/dm/pyding?color=39013C">
     </a>
 </p>
