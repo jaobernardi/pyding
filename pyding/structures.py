@@ -1,31 +1,22 @@
 #structures.py
 from .exceptions import UncancellableEvent
-from .variables import events, async_events
 
 
 # Wrapper for event handlers
 class EventHandler:
-    def __init__(self, function, event, priority, additional_kwargs={}):
+    def __init__(self, function, event: str, priority: int, event_space, additional_kwargs: dict = {}):
         self.function = function
         self.event = event
         self.priority = priority
         self.additional_kwargs = additional_kwargs
+        self.event_space = event_space
 
-
-    def register(self, additional_kwargs={}):
-        if self.event not in events:
-            events[self.event] = {}
-        
-        # Check if the priority is already registered.
-        if self.priority not in events[self.event]:
-            events[self.event][self.priority] = []
-
-        events[self.event][self.priority].append(self)
-
+    def register(self, additional_kwargs: dict={}):
+        self.event_space.register_handler(self)        
         self.additional_kwargs = self.additional_kwargs | additional_kwargs
 
     def unregister(self):
-        events[self.event][self.priority].remove(self)
+        self.event_space.unregister_handler(self)        
 
 
     def call(self, call, args, kwargs):

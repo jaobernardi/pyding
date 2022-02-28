@@ -1,2 +1,0 @@
-events = {}
-async_events = {}
