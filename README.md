@@ -114,7 +114,7 @@ event.cancelled
 
 <h3 align="center">  Dealing with the response </h3>
 
-<p align="center"> Events can return values, which will be attributed to <code>event.response</code></p>
+<p align="center"> Events can return values, which will be attributed to <code>event.response</code> and <code>event.responses</code></p>
 
 ```python
 import pyding
@@ -130,6 +130,9 @@ event = pyding.call("greetings")
 
 event.response
 # Hello World!
+
+event.responses
+# ['Hello World!']
 ```
 
 <h3 align="center">  Using arguments </h3>

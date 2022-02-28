@@ -44,6 +44,7 @@ class EventCall:
         self.__cancelled = False
         self.cancellable = cancellable        
         self.response = None
+        self.responses = []
     
     # Cancelling is only one-way. 
     def cancel(self):

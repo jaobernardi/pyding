@@ -54,8 +54,10 @@ class EventSpace:
         for index in index_order:
             for handler in self.events[event_name][index]:
                 # Run the handler
-                response = handler.call(event_call, args=args, kwargs=kwargs)            
-                event_call.response = response
+                response = handler.call(event_call, args=args, kwargs=kwargs)
+                if response:
+                    event_call.response = response
+                    event_call.responses.append(response)
 
                 # If this is the first response, break the loop
                 if response and first_response:
