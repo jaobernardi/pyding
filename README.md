@@ -177,3 +177,26 @@ myclass = MyClass("foo")
 pyding.call("my_event")
 # "Hello world from MyClass! My name is foo."
 ```
+
+<h3 align="center"> Dealing with Event Spaces </h3>
+<p align="center"> Event spaces allow to separate event handlers. </p>
+
+```python
+# Import the module
+import pyding
+
+# Create an Event Space
+myspace = pyding.EventSpace()
+
+# Attach a handler to an event.
+@myspace.on("greetings")
+def greeter(event):
+    print("Hello there from myspace's event space!")
+
+# Calling the event from the global space won't trigger any handler from myspace.
+pyding.call("greetings")
+
+# Calling the event from myspace will trigger the "greeter" handler.
+myspace.call("greetings")
+# Hello there from myspace's event space!
+```
