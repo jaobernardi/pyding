@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyding",
-    version="1.3.0",
+    version="1.3.1",
     author = 'João Lucas Bernardi',
     author_email="joao_bernardi@outlook.com",
     description="Simpĺe but effective event framework",
