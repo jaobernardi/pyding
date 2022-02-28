@@ -151,3 +151,29 @@ event = pyding.call("greetings", name="John Doe")
 event.response
 # Hello John Doe!
 ```
+
+
+<h3 align="center"> Events within classes </h3>
+<p align="center"> Objects can have methods that act as an event handler. </p>
+
+```python
+import pyding
+
+
+class MyClass(pyding.EventSupport):
+    def __init__(self, name):
+        self.register_events()
+        self.name = name
+
+    @pyding.on("my_event")
+    def event_handler(self, event):
+        print(f"Hello World from MyClass! My name is {self.name}.")
+
+# Nothing will happen because there is no instance of MyClass
+pyding.call("my_event")
+
+myclass = MyClass("foo")
+
+pyding.call("my_event")
+# "Hello world from MyClass! My name is foo."
+```
