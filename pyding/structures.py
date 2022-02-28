@@ -27,9 +27,11 @@ class EventHandler:
     def unregister(self):
         events[self.event][self.priority].remove(self)
 
+
     def call(self, call, args, kwargs):
         kwargs = kwargs | self.additional_kwargs
-        return self.function(call, *args, **kwargs)
+        return self.function(event=call, *args, **kwargs)
+
 
 # Add support for event calls inside objects
 class EventSupport:
