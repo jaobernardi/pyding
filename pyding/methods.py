@@ -4,11 +4,5 @@ from .structures import EventCall, EventHandler
 import asyncio
 
 
-# Define the "on" method
-def on(*args, **kwargs):
-    return global_event_space.on(*args, **kwargs)
-
-
-# Define the "call" method
-def call(*args, **kwargs):
-    return global_event_space.call(*args, **kwargs)
+on = global_event_space.on
+call = global_event_space.call
