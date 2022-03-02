@@ -1,6 +1,9 @@
 from .structures import EventHandler, EventCall
 
 class EventSpace:
+    """
+        Manages and holds the event listener/handlers.
+    """
     def __init__(self):
         self.events = {}
     
@@ -19,7 +22,18 @@ class EventSpace:
         self.events[handler.event][handler.priority].remove(handler)
 
     # Define the "on" method
-    def on(self, event_name, priority=0, register_ra=True, function=None):
+    def on(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None):
+        """Attaches a handler
+
+        Args:
+            event_name (str): Event name
+            priority (int, optional): Handler priority. Defaults to 0.
+            register_ra (bool, optional): Register the handler rigth now. Defaults to True.
+            function (bool, optional): Handler function
+
+        Returns:
+            EventHandler
+        """
         # Wrap the function
         def wrapper(func):
             # Insert the handler function into the dict.
@@ -37,7 +51,18 @@ class EventSpace:
 
 
     # Define the "call" method
-    def call(self, event_name, cancellable=False, blocking=True, first_response=False, *args, **kwargs):
+    def call(self, event_name: str, cancellable: bool=False, blocking: bool=True, first_response: bool=False, *args, **kwargs):
+        """Calls an event
+
+        Args:
+            event_name (str): Name of the event being called.
+            cancellable (bool, optional): If the called event can be cancelled. Defaults to False.
+            blocking (bool, optional): Stop the event if it has been cancelled. Defaults to True.
+            first_response (bool, optional): Stop the event at the first response. Defaults to False.
+
+        Returns:
+            EventCall
+        """
         # Return nothing if there isn't an event registered with this name.
         if event_name not in self.events:
             return
