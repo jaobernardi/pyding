@@ -36,7 +36,7 @@ pyding.call("greetings")
 
 <p align="center"> You can also make events that can be cancelled, using the <code>cancellable</code> keyword for <code>pyding.call</code></p>
 
-> ⚠️ - Cancelling and event which cannot be cancelled will raise `pyding.exceptions.UncancellableEvent`
+> ⚠️ - Cancelling an event which cannot be cancelled will raise `pyding.exceptions.UncancellableEvent`
 
 ```python
 import pyding
