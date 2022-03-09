@@ -18,6 +18,9 @@ class EventHandler:
     def unregister(self):
         self.event_space.unregister_handler(self)        
 
+    @property
+    def registered(self):
+        return self.event_space.handler_registered(self)
 
     def call(self, call, args, kwargs):
         kwargs = kwargs | self.additional_kwargs
@@ -33,6 +36,8 @@ class EventSupport:
         for method in self.__dir__():
             method = self.__getattribute__(method)
             if isinstance(method, EventHandler):
+                if method.registered:
+                    method.unregister()
                 method.register({"self": self})
 
 

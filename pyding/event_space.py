@@ -18,6 +18,9 @@ class EventSpace:
         self.events[handler.event][handler.priority].append(handler)
 
 
+    def handler_registered(self, handler):
+        return handler in self.events[handler.event][handler.priority]
+
     def unregister_handler(self, handler):
         self.events[handler.event][handler.priority].remove(handler)
 
