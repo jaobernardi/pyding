@@ -19,13 +19,13 @@ class EventSpace:
 
 
     def handler_registered(self, handler):
-        return handler in self.events[handler.event][handler.priority]
+        return handler in self.events[handler.event][handler.priority] if handler.event in self.events else False
 
     def unregister_handler(self, handler):
         self.events[handler.event][handler.priority].remove(handler)
 
     # Define the "on" method
-    def on(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None):
+    def on(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None, requirement_exceptions: bool=False, **kwargs):
         """Attaches a handler
 
         Args:
@@ -40,7 +40,7 @@ class EventSpace:
         # Wrap the function
         def wrapper(func):
             # Insert the handler function into the dict.
-            handler = EventHandler(func, event_name, priority, self)
+            handler = EventHandler(func, event_name, priority, self, requirement_exceptions=requirement_exceptions, execution_requirements=kwargs)
             if register_ra:
                 handler.register()
             return handler

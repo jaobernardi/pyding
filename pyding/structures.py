@@ -1,15 +1,17 @@
 #structures.py
-from .exceptions import UncancellableEvent
+from .exceptions import UncancellableEvent, UnfulfilledRequirement
 
 
 # Wrapper for event handlers
 class EventHandler:
-    def __init__(self, function, event: str, priority: int, event_space, additional_kwargs: dict = {}):
+    def __init__(self, function, event: str, priority: int, event_space, additional_kwargs: dict = {}, execution_requirements: dict = {}, requirement_exceptions: bool = False):
         self.function = function
         self.event = event
         self.priority = priority
         self.additional_kwargs = additional_kwargs
         self.event_space = event_space
+        self.execution_requirements = execution_requirements
+        self.requirement_exceptions = requirement_exceptions
 
     def register(self, additional_kwargs: dict={}):
         self.event_space.register_handler(self)        
@@ -22,8 +24,14 @@ class EventHandler:
     def registered(self):
         return self.event_space.handler_registered(self)
 
-    def call(self, call, args, kwargs):
+    def call(self, call, args, kwargs):        
         kwargs = kwargs | self.additional_kwargs
+        for argument in self.execution_requirements:
+            if argument not in kwargs or self.execution_requirements[argument] != kwargs[argument]:
+                if self.requirement_exceptions:
+                    raise UnfulfilledRequirement(f"Argument {argument} was unmet.")
+                return
+
         return self.function(event=call, *args, **kwargs)
 
 

@@ -1,11 +1,12 @@
 import setuptools
+import pyding
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="pyding",
-    version="1.3.6",
+    version=pyding.__version__,
     author = 'João Lucas Bernardi',
     author_email="joao_bernardi@outlook.com",
     description="Simpĺe but effective event framework",

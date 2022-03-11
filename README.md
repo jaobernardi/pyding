@@ -155,6 +155,31 @@ event.response
 # Hello John Doe!
 ```
 
+<p align="center"> Essential arguments can be passed to <code>@pyding.on</code> to make sure the handler only will be called if they're met.</p>
+
+```python
+import pyding
+
+# Attach the handler to an event
+@pyding.on("greetings", name="John Doe")
+def john_doe_greeter(event, name, time):
+    return f"Hello {name}! It's currently {time}"
+
+
+# Call the event
+event_two = pyding.call("greetings", name="John Bar", time="10 AM")
+# There won't be any response since the handler won't be called since the 'name' essential keyword wasn't equal to 'John Doe'.
+event_two.response
+# None
+
+# Call the event
+event = pyding.call("greetings", name="John Doe", time="10 AM")
+
+event.response
+# "Hello John Doe! It's currently 10 AM"
+
+# You can also raise pyding.exceptions.UnfulfilledException if you add requirement_exceptions=True to pyding.on decorator.
+```
 
 <h3 align="center"> Events within classes </h3>
 <p align="center"> Objects can have methods that act as an event handler. </p>
