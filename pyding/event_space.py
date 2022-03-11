@@ -83,13 +83,14 @@ class EventSpace:
             for handler in self.events[event_name][index]:
                 # Run the handler
                 response = handler.call(event_call, args=args, kwargs=kwargs)
+                event_call.responses.append(response)
                 if response != None:
                     event_call.response = response
-                event_call.responses.append(response)
+                    # If this is the first response, break the loop
+                    if first_response:
+                        return event_call
 
-                # If this is the first response, break the loop
-                if response != None and first_response:
-                    return event_call
+
 
                 # If the event was cancelled, do not run the next handlers.
                 if event_call.cancelled and blocking:
