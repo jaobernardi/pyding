@@ -83,7 +83,8 @@ class EventSpace:
             for handler in self.events[event_name][index]:
                 # Run the handler
                 response = handler.call(event_call, args=args, kwargs=kwargs)
-                event_call.response = response
+                if response != None:
+                    event_call.response = response
                 event_call.responses.append(response)
 
                 # If this is the first response, break the loop
