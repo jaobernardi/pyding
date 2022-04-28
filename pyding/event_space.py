@@ -66,12 +66,13 @@ class EventSpace:
         Returns:
             EventCall
         """
-        # Return nothing if there isn't an event registered with this name.
-        if event_name not in self.events:
-            return
         
         # Define the event call object.
         event_call = EventCall(event_name=event_name, cancellable=cancellable)
+
+        # Return if there isn't an event registered with this name.
+        if event_name not in self.events:
+            return event_call
 
         # Get the ordered priorities
         index_order = list(self.events[event_name])
