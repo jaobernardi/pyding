@@ -1,5 +1,6 @@
 #structures.py
 import asyncio
+import inspect
 from .exceptions import UncancellableEvent, UnfulfilledRequirement
 
 
@@ -14,6 +15,10 @@ class EventHandler:
         self.execution_requirements = execution_requirements
         self.requirement_exceptions = requirement_exceptions
         self.is_async = is_async
+
+    @property
+    def origin_module(self):
+        return inspect.getmodule(self.function)
 
     def register(self, additional_kwargs: dict={}):
         self.event_space.register_handler(self)        

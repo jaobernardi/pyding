@@ -21,8 +21,16 @@ class EventSpace:
     def handler_registered(self, handler):
         return handler in self.events[handler.event][handler.priority] if handler.event in self.events else False
 
+    def unregister_from_module(self, module):
+        for event in self.events.values():
+            for handlers in event.values():
+                for handler in handlers:
+                    if handler.origin_module == module:
+                        handlers.remove(handler)
+
     def unregister_handler(self, handler):
         self.events[handler.event][handler.priority].remove(handler)
+
 
     # Define the "on" method
     def on(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None, requirement_exceptions: bool=False, is_async: bool=False, **kwargs):
