@@ -4,4 +4,4 @@ from .exceptions import UncancellableEvent
 from .event_space import EventSpace
 
 __name__ = "pyding"
-__version__ = "1.4.4"
+__version__ = "1.4.5"
