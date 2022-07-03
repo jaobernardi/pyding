@@ -103,7 +103,7 @@ class EventSpace:
 
                 # If the event was cancelled, do not run the next handlers.
                 if event_call.cancelled and blocking:
-                    break
+                    return event_call
 
         # Return the event
         return event_call
