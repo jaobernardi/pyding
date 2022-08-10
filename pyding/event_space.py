@@ -18,6 +18,20 @@ class EventSpace:
         self.events[handler.event][handler.priority].append(handler)
 
 
+    def get_handlers(self, event):
+        # Get the ordered priorities
+        index_order = list(self.events[event])
+        index_order.sort(reverse=True) # Reverse the order to make it descending.
+
+
+        # Index the handlers.
+        handlers = []
+        for index in index_order:
+            for handler in self.events[event][index]:
+                handlers.append(handler)
+        return handlers
+
+
     def handler_registered(self, handler):
         return handler in self.events[handler.event][handler.priority] if handler.event in self.events else False
 
@@ -82,28 +96,20 @@ class EventSpace:
         if event_name not in self.events:
             return event_call
 
-        # Get the ordered priorities
-        index_order = list(self.events[event_name])
-        index_order.sort(reverse=True) # Reverse the order to make it descending.
-
-
         # Run the handlers.
-        for index in index_order:
-            for handler in self.events[event_name][index]:
-                # Run the handler
-                response = handler.call(event_call, args=args, kwargs=kwargs)
-                event_call.responses.append(response)
-                if response != None:
-                    event_call.response = response
-                    # If this is the first response, break the loop
-                    if first_response:
-                        return event_call
+        for handler in self.get_handlers(event_name):
+            # Run the handler
+            response = handler.call(event_call, args=args, kwargs=kwargs)
+            event_call.responses.append(response)
+            if response != None:
+                event_call.response = response
+                # If this is the first response, break the loop
+                if first_response:
+                    break
 
-
-
-                # If the event was cancelled, do not run the next handlers.
-                if event_call.cancelled and blocking:
-                    return event_call
+            # If the event was cancelled, do not run the next handlers.
+            if event_call.cancelled and blocking:
+                break
 
         # Return the event
         return event_call
