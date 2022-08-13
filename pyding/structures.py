@@ -65,6 +65,7 @@ class EventCall:
     def __init__(self, event_name, cancellable=False):
         self.__name = event_name
         self.__cancelled = False
+        self.__stopped = False
         self.cancellable = cancellable        
         self.response = None
         self.responses = []
@@ -76,10 +77,17 @@ class EventCall:
             return
         raise UncancellableEvent(f'{self.event_name} is not an cancellable event.')
     
+    def stop(self):
+        self.__stopped = True
+
     # Using it as a property since we don't want it to be writable 
     @property
     def cancelled(self):
         return self.__cancelled
+
+    @property
+    def stopped(self):
+        return self.__stopped
 
     @property
     def name(self):
