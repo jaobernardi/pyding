@@ -111,6 +111,7 @@ event = pyding.call("check", cancellable=True, blocking=False)
 event.cancelled
 # True
 ```
+> 🛑 - You can also stop the event execution by using `event.stop()`
 
 <h3 align="center">  Dealing with the response </h3>
 
