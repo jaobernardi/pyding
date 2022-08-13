@@ -228,3 +228,24 @@ pyding.call("greetings")
 myspace.call("greetings")
 # Hello there from myspace's event space!
 ```
+
+<h3 align="center"> Removing handlers </h3>
+<p align="center"> Event spaces allow you to unregister handlers. </p>
+
+```python
+# Import the module
+import pyding
+
+# Attach a handler to an event.
+@on("greetings")
+def greeter(event):
+    print("Hello there from myspace's event space!")
+
+# Unregister event
+pyding.unregister_handler(greeter)
+# Or
+greeter.unregister()
+# You can also remove handlers from other modules by using pyding.unregister_from_module(module)
+
+```
+

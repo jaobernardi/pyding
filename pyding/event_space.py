@@ -9,7 +9,7 @@ class EventSpace:
     
     def register_handler(self, handler):
         if handler.event not in self.events:
-            self.events[handler.event] = {}
+            self.events[handler.event]: dict[str, dict[int, list[EventHandler]]] = {}
         
         # Check if the priority is already registered.
         if handler.priority not in self.events[handler.event]:
