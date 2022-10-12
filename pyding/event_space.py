@@ -1,3 +1,4 @@
+import asyncio
 from .structures import EventHandler, EventCall
 
 class EventSpace:
@@ -75,6 +76,34 @@ class EventSpace:
         wrapper(function)
 
 
+    async def async_call(self, event_name: str, cancellable: bool=False, blocking: bool=True, first_response: bool=False, *args, **kwargs):
+        """Calls an event with asynchronous handlers
+
+        Args:
+            event_name (str): Name of the event being called.
+            cancellable (bool, optional): If the called event can be cancelled. Defaults to False.
+            blocking (bool, optional): Stop the event if it has been cancelled. Defaults to True.
+            first_response (bool, optional): Stop the event at the first response. Defaults to False.
+
+        Returns:
+            EventCall
+        """
+        # Define the event call object.
+        event_call = EventCall(event_name=event_name, cancellable=cancellable)
+ 
+        # Return if there isn't an event registered with this name.
+        if event_name not in self.events:
+            return event_call
+
+        # Run the handlers.
+        calls = []
+        for handler in self.get_handlers(event_name):
+            handler: EventHandler
+            calls.append(handler.async_call(event_call, args=args, kwargs=kwargs))
+        event_call.responses = await asyncio.gather(*calls)
+        # Return the event
+        return event_call
+
     # Define the "call" method
     def call(self, event_name: str, cancellable: bool=False, blocking: bool=True, first_response: bool=False, *args, **kwargs):
         """Calls an event
@@ -98,11 +127,11 @@ class EventSpace:
 
         # Run the handlers.
         for handler in self.get_handlers(event_name):
+            handler: EventHandler
             # Run the handler
             response = handler.call(event_call, args=args, kwargs=kwargs)
             event_call.responses.append(response)
             if response != None:
-                event_call.response = response
                 # If this is the first response, break the loop
                 if first_response:
                     break

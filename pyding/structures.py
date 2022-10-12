@@ -31,6 +31,16 @@ class EventHandler:
     def registered(self):
         return self.event_space.handler_registered(self)
 
+    async def async_call(self, call, args, kwargs):
+        kwargs = kwargs | self.additional_kwargs
+        for argument in self.execution_requirements:
+            if argument not in kwargs or self.execution_requirements[argument] != kwargs[argument]:
+                if self.requirement_exceptions:
+                    raise UnfulfilledRequirement(f"Argument {argument} was unmet.")
+                return
+        return await self.function(event=call, *args, **kwargs)
+
+
     def call(self, call, args, kwargs):        
         kwargs = kwargs | self.additional_kwargs
         for argument in self.execution_requirements:
@@ -66,8 +76,8 @@ class EventCall:
         self.__name = event_name
         self.__cancelled = False
         self.__stopped = False
+        self.__response = None
         self.cancellable = cancellable        
-        self.response = None
         self.responses = []
     
     # Cancelling is only one-way. 
@@ -84,6 +94,10 @@ class EventCall:
     @property
     def cancelled(self):
         return self.__cancelled
+
+    @property
+    def response(self):
+        return self.responses[0]
 
     @property
     def stopped(self):
