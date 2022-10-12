@@ -97,7 +97,7 @@ class EventCall:
 
     @property
     def response(self):
-        return self.responses[0]
+        return next((i for i in self.responses if i), None)
 
     @property
     def stopped(self):
