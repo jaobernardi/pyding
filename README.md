@@ -32,7 +32,7 @@ pyding.call("greetings")
 # Hello there from pyding!
 ```
 
-<h2 align="center"> Async handlers </h2>
+<h3 align="center"> Async handlers </h2>
 
 
 ```python
