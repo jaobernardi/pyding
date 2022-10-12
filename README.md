@@ -32,6 +32,25 @@ pyding.call("greetings")
 # Hello there from pyding!
 ```
 
+<h2 align="center"> Async handlers </h2>
+
+
+```python
+# Import the module
+import pyding
+import asyncio
+
+# Attach a handler to an event.
+@pyding.on("greetings", is_async=True)
+async def greeter(event):
+    print("Hello there from pyding!")
+
+# Call the event
+asyncio.run(pyding.async_call('greetings'))
+
+# Hello there from pyding!
+```
+
 <h3 align="center"> Cancellable events </h3>
 
 <p align="center"> You can also make events that can be cancelled, using the <code>cancellable</code> keyword for <code>pyding.call</code></p>
