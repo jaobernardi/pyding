@@ -76,20 +76,17 @@ class EventSpace:
         wrapper(function)
 
 
-    async def async_call(self, event_name: str, cancellable: bool=False, blocking: bool=True, first_response: bool=False, *args, **kwargs):
+    async def async_call(self, event_name: str, *args, **kwargs):
         """Calls an event with asynchronous handlers
 
         Args:
             event_name (str): Name of the event being called.
-            cancellable (bool, optional): If the called event can be cancelled. Defaults to False.
-            blocking (bool, optional): Stop the event if it has been cancelled. Defaults to True.
-            first_response (bool, optional): Stop the event at the first response. Defaults to False.
 
         Returns:
             EventCall
         """
         # Define the event call object.
-        event_call = EventCall(event_name=event_name, cancellable=cancellable)
+        event_call = EventCall(event_name=event_name)
  
         # Return if there isn't an event registered with this name.
         if event_name not in self.events:
