@@ -99,10 +99,15 @@ class EventSpace:
         calls = []
         for handler in self.get_handlers(event_name):
             handler: EventHandler
-            calls.append(handler.async_call(event_call, args=args, kwargs=kwargs))
+            handler_return = handler.async_call(event_call, args=args, kwargs=kwargs)
+            if handler.is_async:
+                calls.append(handler_return)
+            else:
+                event_call.responses.append(handler_return)
         event_call.responses = await asyncio.gather(*calls)
         # Return the event
         return event_call
+
 
     # Define the "call" method
     def call(self, event_name: str, cancellable: bool=False, blocking: bool=True, first_response: bool=False, *args, **kwargs):
