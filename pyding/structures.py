@@ -6,7 +6,7 @@ from .exceptions import UncancellableEvent, UnfulfilledRequirement
 
 # Wrapper for event handlers
 class EventHandler:
-    def __init__(self, function, event: str, priority: int, event_space, additional_kwargs: dict = {}, execution_requirements: dict = {}, requirement_exceptions: bool = False, is_async: bool = False):
+    def __init__(self, function, event: str, priority: int, event_space, additional_kwargs: dict = {}, execution_requirements: dict = {}, requirement_exceptions: bool = False, is_async: bool = None):
         self.function = function
         self.event = event
         self.priority = priority
@@ -14,7 +14,7 @@ class EventHandler:
         self.event_space = event_space
         self.execution_requirements = execution_requirements
         self.requirement_exceptions = requirement_exceptions
-        self.is_async = is_async
+        self.is_async = is_async if isinstance(is_async, bool) else inspect.iscoroutinefunction(function)
 
     @property
     def origin_module(self):
