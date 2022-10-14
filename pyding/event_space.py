@@ -48,7 +48,7 @@ class EventSpace:
 
 
     # Define the "on" method
-    def on(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None, requirement_exceptions: bool=False, is_async: bool=False, **kwargs):
+    def on(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None, requirement_exceptions: bool=False, is_async: bool=None, **kwargs):
         """Attaches a handler
 
         Args:
