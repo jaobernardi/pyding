@@ -5,7 +5,8 @@ class EventSpace:
     """
         Manages and holds the event listener/handlers.
     """
-    def __init__(self):
+    def __init__(self, event_handler_class: EventHandler = None):
+        self.event_handler_class = event_handler_class or EventHandler
         self.events = {}
     
     def register_handler(self, handler):
@@ -63,7 +64,7 @@ class EventSpace:
         # Wrap the function
         def wrapper(func):
             # Insert the handler function into the dict.
-            handler = EventHandler(func, event_name, priority, self, is_async=is_async, requirement_exceptions=requirement_exceptions, execution_requirements=kwargs)
+            handler = self.event_handler_class(func, event_name, priority, self, is_async=is_async, requirement_exceptions=requirement_exceptions, execution_requirements=kwargs)
             if register_ra:
                 handler.register()
             return handler
