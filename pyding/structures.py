@@ -32,23 +32,17 @@ class EventHandler:
         return self.event_space.handler_registered(self)
 
     async def async_call(self, call, args, kwargs):
+        return await self.call(call, args, kwargs, ignore_async=True)
+
+
+    def call(self, call, args, kwargs, ignore_async=False):        
         kwargs = kwargs | self.additional_kwargs
         for argument in self.execution_requirements:
             if argument not in kwargs or self.execution_requirements[argument] != kwargs[argument]:
                 if self.requirement_exceptions:
                     raise UnfulfilledRequirement(f"Argument {argument} was unmet.")
                 return
-        return await self.function(event=call, *args, **kwargs)
-
-
-    def call(self, call, args, kwargs):        
-        kwargs = kwargs | self.additional_kwargs
-        for argument in self.execution_requirements:
-            if argument not in kwargs or self.execution_requirements[argument] != kwargs[argument]:
-                if self.requirement_exceptions:
-                    raise UnfulfilledRequirement(f"Argument {argument} was unmet.")
-                return
-        if self.is_async:
+        if self.is_async and not ignore_async:
             return asyncio.run(self.function(event=call, *args, **kwargs))
         return self.function(event=call, *args, **kwargs)
 
