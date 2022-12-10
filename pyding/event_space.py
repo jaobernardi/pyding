@@ -1,5 +1,5 @@
 import asyncio
-from .structures import EventHandler, EventCall
+from .structures import EventHandler, EventCall, WaitingHandler
 
 class EventSpace:
     """
@@ -47,6 +47,11 @@ class EventSpace:
     def unregister_handler(self, handler):
         self.events[handler.event][handler.priority].remove(handler)
 
+
+    def wait_for(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None, requirement_exceptions: bool=False, is_async: bool=None, **kwargs):
+        handler = WaitingHandler(event_name, priority, self, is_async=is_async, requirement_exceptions=requirement_exceptions, execution_requirements=kwargs)
+        handler.register()
+        return handler.wait()
 
     # Define the "on" method
     def on(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None, requirement_exceptions: bool=False, is_async: bool=None, **kwargs):
