@@ -47,6 +47,20 @@ class EventHandler:
         return self.function(event=call, *args, **kwargs)
 
 
+class WaitingHandler(EventHandler):
+    def __init__(self, *args, **kwargs):
+        self.output = None
+        super().__init__(self.handler, *args, **kwargs)
+    
+    def handler(self, *args, **kwargs):
+        self.output = kwargs
+        return
+    
+    def wait(self):
+        while not self.output:
+            continue
+        return self.output
+
 
 
 # Add support for event calls inside objects
