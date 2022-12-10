@@ -51,6 +51,31 @@ asyncio.run(pyding.async_call('greetings'))
 # Hello there from pyding!
 ```
 
+<h3 align="center"> Waiting for events </h3>
+
+<p align="center"> You can wait for events to be called from another part from your code without having to create a handler by using <code>pyding.wait_for</code></p>
+
+```python
+# Import the module
+import pyding
+from threading import Thread
+from time import sleep
+
+def random_calls():
+    # Keep calling the event every 10 seconds.
+    while True:
+        pyding.call("random_event")
+        sleep(10)
+
+# Start the thread
+thread = Thread(target=random_calls, daemon=True)
+thread.start()
+
+# Wait for the event to be called
+event_inputs = pyding.wait_for("random_event")
+# event_inputs = {'event': EventCall object, ... any other keyargs here ... }
+```
+
 <h3 align="center"> Cancellable events </h3>
 
 <p align="center"> You can also make events that can be cancelled, using the <code>cancellable</code> keyword for <code>pyding.call</code></p>
