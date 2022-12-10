@@ -2,7 +2,7 @@
 from .event_space import global_event_space
 from .structures import EventCall, EventHandler
 
-
+wait_for = global_event_space.wait_for
 on = global_event_space.on
 call = global_event_space.call
 async_call = global_event_space.async_call
