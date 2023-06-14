@@ -59,6 +59,7 @@ class WaitingHandler(EventHandler):
     def wait(self):
         while not self.output:
             continue
+        self.unregister()
         return self.output
 
 
