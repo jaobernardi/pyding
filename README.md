@@ -76,6 +76,27 @@ event_inputs = pyding.wait_for("random_event")
 # event_inputs = {'event': EventCall object, ... any other keyargs here ... }
 ```
 
+<h3 align="center"> Queues </h3>
+
+<p align="center"> Queues are populated from events, useful for multiple entry points approaches with <code>pyding.queue</code></p>
+
+```python
+import pyding
+from threading import Thread
+
+def listener(event):
+    queue = pyding.queue("foo")
+    while True:
+        event = queue.get()
+        # do stuff here...
+
+# Start the listener
+Thread(target=listener, daemon=True).start()
+
+# Call the event
+event = pyding.call("check", cancellable=True)
+```
+
 <h3 align="center"> Cancellable events </h3>
 
 <p align="center"> You can also make events that can be cancelled, using the <code>cancellable</code> keyword for <code>pyding.call</code></p>
@@ -99,26 +120,6 @@ event.cancelled
 # will return True
 ```
 
-<h3 align="center"> Queues </h3>
-
-<p align="center"> Queues are populated from events, useful for multiple entry points approaches with <code>pyding.queue</code></p>
-
-```python
-import pyding
-from threading import Thread
-
-def listener(event):
-    queue = pyding.queue("foo")
-    while True:
-        event = queue.get()
-        # do stuff here...
-
-# Start the listener
-Thread(target=listener, daemon=True).start()
-
-# Call the event
-event = pyding.call("check", cancellable=True)
-```
 
 
 <h3 align="center"> Hierarchy </h3>
