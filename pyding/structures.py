@@ -1,6 +1,8 @@
 #structures.py
 import asyncio
 import inspect
+import queue
+from threading import Thread
 from .exceptions import UncancellableEvent, UnfulfilledRequirement
 
 
@@ -62,6 +64,17 @@ class WaitingHandler(EventHandler):
         self.unregister()
         return self.output
 
+class QueuedHandler(EventHandler):
+    def __init__(self, *args, **kwargs):
+        self.output = None
+        self.queue = queue.Queue()
+        super().__init__(self.handler, *args, **kwargs)
+    
+    def handler(self, *args, **kwargs):
+        Thread(target=self.queue.put, args=(kwargs,), daemon=True, name='Include event to queue').start()
+    
+    def get_queue(self):
+        return self.queue
 
 
 # Add support for event calls inside objects
@@ -76,8 +89,6 @@ class EventSupport:
                 if method.registered:
                     method.unregister()
                 method.register({"self": self})
-
-
 
 # Define the EventCall class
 class EventCall:
