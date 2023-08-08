@@ -99,6 +99,28 @@ event.cancelled
 # will return True
 ```
 
+<h3 align="center"> Queues </h3>
+
+<p align="center"> Queues are populated from events, useful for multiple entry points approaches with <code>pyding.queue</code></p>
+
+```python
+import pyding
+from threading import Thread
+
+def listener(event):
+    queue = pyding.queue("foo")
+    while True:
+        event = queue.get()
+        # do stuff here...
+
+# Start the listener
+Thread(target=listener, daemon=True).start()
+
+# Call the event
+event = pyding.call("check", cancellable=True)
+```
+
+
 <h3 align="center"> Hierarchy </h3>
 
 <p align="center"> Event handlers can have an priority attached to them. If the event is cancelled, it will not execute the next handlers. This behavior can be changed by the <code>blocking</code> keyword for <code>pyding.call</code></p>
