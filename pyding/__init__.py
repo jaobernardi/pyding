@@ -1,7 +1,12 @@
-from .methods import wait_for, on, call, async_call, handlers_registered, register_handler, unregister_from_module, unregister_handler, get_handlers
 from .structures import EventCall, EventHandler, EventSupport
 from .exceptions import UncancellableEvent
-from .event_space import EventSpace
+from .event_space import EventSpace, global_event_space
 
 __name__ = "pyding"
-__version__ = "1.7.1"
+__version__ = "1.8.0"
+
+def __getattr__(attr):
+    return global_event_space.__getattribute__(attr)
+
+def __dir__():
+    return global_event_space.__dir__()
