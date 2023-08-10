@@ -1,4 +1,4 @@
-from .structures import EventCall, EventHandler, EventSupport
+from .structures import EventCall, EventHandler, EventSupport, Contains
 from .exceptions import UncancellableEvent
 from .event_space import EventSpace, global_event_space
 

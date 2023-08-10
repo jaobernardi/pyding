@@ -3,6 +3,7 @@ import asyncio
 import inspect
 import queue
 from threading import Thread
+from typing import Any, Iterable
 from .exceptions import UncancellableEvent, UnfulfilledRequirement
 
 
@@ -129,3 +130,14 @@ class EventCall:
     
     def __repr__(self):
         return f'<EventCall _name={self.name!r} _cancelled={self.cancelled!r} _response={self.response!r}>'
+
+
+class Contains:
+    def __init__(self, value: Iterable[Any]):
+        self.value = value
+    
+    def __eq__(self, __value: object) -> bool:
+        return __value in self.value
+
+    def __repr__(self) -> str:
+        return f'<Contains value={self.value!r}>'
