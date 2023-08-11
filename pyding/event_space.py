@@ -1,4 +1,6 @@
 import asyncio
+from queue import Queue
+from typing import Union
 from .structures import EventHandler, EventCall, WaitingHandler, QueuedHandler
 
 class EventSpace:
@@ -47,10 +49,11 @@ class EventSpace:
     def unregister_handler(self, handler):
         self.events[handler.event][handler.priority].remove(handler)
 
-    def queue(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None, requirement_exceptions: bool=False, is_async: bool=None, **kwargs):
+    def queue(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None, requirement_exceptions: bool=False, is_async: bool=None, return_handler: bool = None, **kwargs)\
+        -> Union[QueuedHandler, Queue]:
         handler = QueuedHandler(event_name, priority, self, is_async=is_async, requirement_exceptions=requirement_exceptions, execution_requirements=kwargs)
         handler.register()
-        return handler.get_queue()
+        return handler.get_queue() if not return_handler else handler
 
     def wait_for(self, event_name: str, priority: int=0, register_ra: bool=True, function: bool=None, requirement_exceptions: bool=False, is_async: bool=None, **kwargs):
         handler = WaitingHandler(event_name, priority, self, is_async=is_async, requirement_exceptions=requirement_exceptions, execution_requirements=kwargs)
